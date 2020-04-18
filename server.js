@@ -94,6 +94,15 @@ process.on('uncaughtException', err => {
   console.log(`Uncaught Exception: ${err.message}`)
   process.exit(1)
 })
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled rejection at ', promise, `reason: ${err.message}`)
+  process.exit(1)
+})
+function handle(signal) {
+  console.log(`Received ${signal}`);
+}
+process.on('SIGINT', handle);
+process.on('SIGTERM', handle);
 
 
 client.login(token);
