@@ -90,5 +90,10 @@ client.on('message', async message => {
     
 });
 
+process.on('uncaughtException', err => {
+  console.log(`Uncaught Exception: ${err.message}`)
+  process.exit(1)
+})
+
 
 client.login(token);
