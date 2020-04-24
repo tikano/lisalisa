@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const io = require('console-read-write');
 const token = "NjkzNTQwOTY0NjY4ODAxMTgz.XpPHVw.ejmMutg_w8mrXWQyDHqDs0iIo-c";
 const client = new Discord.Client();
 
@@ -7,15 +6,6 @@ const client = new Discord.Client();
 var snowflak = 993240367058911252;
 
 var looping = false;
-
-async function main() {
-  while(true){
-    message = await io.read();
-    
-  }
-}
-
-main();
 
 
 async function ServerloopUser(size, guild, user){
@@ -69,7 +59,7 @@ function generateRandomMessage(user){
 client.on('message', async message => {
     if (message.author.bot) return;
     message.member.messageCount++;
-    console.log(message.channel.name + message.author.username + " - " + message.content);
+  
     
     if(message.content.startsWith('initialize lisa lisa') && message.author.username == "jikat2"){
       looping = true;
