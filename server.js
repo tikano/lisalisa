@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const io = require('console-read-write');
 const token = "NjkzNTQwOTY0NjY4ODAxMTgz.XpPHVw.ejmMutg_w8mrXWQyDHqDs0iIo-c";
 const client = new Discord.Client();
 
@@ -7,7 +8,14 @@ var snowflak = 993240367058911252;
 
 var looping = false;
 
+async function main() {
+  while(true){
+    message = await io.read();
+    
+  }
+}
 
+main();
 
 
 async function ServerloopUser(size, guild, user){
@@ -35,7 +43,9 @@ async function loop(size, channel, user, count){
         size1 = messages.size;
         messages.each(message => {
           if(message.content.length >= 5){
-            message.member.messageArray.push(message.id);
+            if(!(!message.member)){
+              message.member.messageArray.push(message.id);
+            }
           }
           count++;    
           snowflak = message.id;
@@ -59,6 +69,7 @@ function generateRandomMessage(user){
 client.on('message', async message => {
     if (message.author.bot) return;
     message.member.messageCount++;
+    console.log(message.channel.name + message.author.username + " - " + message.content);
     
     if(message.content.startsWith('initialize lisa lisa') && message.author.username == "jikat2"){
       looping = true;
@@ -89,20 +100,6 @@ client.on('message', async message => {
     }
     
 });
-
-process.on('uncaughtException', err => {
-  console.log(`Uncaught Exception: ${err.message}`)
-  process.exit(1)
-})
-process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled rejection at ', promise, `reason: ${err.message}`)
-  process.exit(1)
-})
-function handle(signal) {
-  console.log(`Received ${signal}`);
-}
-process.on('SIGINT', handle);
-process.on('SIGTERM', handle);
 
 
 client.login(token);
