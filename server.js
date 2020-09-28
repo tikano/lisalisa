@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const token = "NjkzNTQwOTY0NjY4ODAxMTgz.XpPHVw.ejmMutg_w8mrXWQyDHqDs0iIo-c";
+const token = process.env.SECRET;
 const client = new Discord.Client();
 
 //var snowflak = 693240367058911252;
@@ -11,7 +11,7 @@ var looping = false;
 async function ServerloopUser(size, guild, user){
     var usercount = 0;
     var channelList = guild.channels.cache.array();
-    for(channel of channelList){
+    for(var channel of channelList){
         if(channel.type == "text"){
             var x = 0;
             x = await loop(100, channel, user, 0);
@@ -59,12 +59,17 @@ function generateRandomMessage(user){
 client.on('message', async message => {
     if (message.author.bot) return;
     message.member.messageCount++;
-  
+    console.log(message.content + " - " + message.channel);
+    if(message.channel.name == "images-only-please"){
+      if(message.content != ""){
+        message.delete();
+      }
+    }
     
     if(message.content.startsWith('initialize lisa lisa') && message.author.username == "jikat2"){
       looping = true;
       var allUsers = message.guild.members.cache.array();
-      for(user of allUsers){
+      for(var user of allUsers){
         user.messageArray = [];
       }
       ServerloopUser(100, message.guild, message.author).then(usercount => {console.log(usercount)});
@@ -91,5 +96,24 @@ client.on('message', async message => {
     
 });
 
+client.on('messageReactionAdd', async (reaction, user) => {
+	// When we receive a reaction we check if the reaction is partial or not
+	if (reaction.partial) {
+		// If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
+		try {
+			await reaction.fetch();
+		} catch (error) {
+			console.log('Something went wrong when fetching the message: ', error);
+			// Return as `reaction.message.author` may be undefined/null
+			return;
+		}
+    
+	}
+	// Now the message has been cached and is fully available
+	reaction.message.channel.send("<@" + reaction.message.author.id + ">").then(msg => {
+    msg.delete()
+  })
+  
+});
 
-client.login(token);
+client.login("NjkzNTQwOTY0NjY4ODAxMTgz.XpPHVw.ejmMutg_w8mrXWQyDHqDs0iIo-c");
